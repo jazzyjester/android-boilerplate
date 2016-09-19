@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 
 @Singleton
@@ -64,5 +65,17 @@ public class DatabaseHelper {
                     }
                 });
     }
+
+    public Observable<List<Movie>> getMovies() {
+
+
+        return mDb.createQuery(MovieDb.MovieTable.TABLE_NAME,"SELECT * FROM " + MovieDb.MovieTable.TABLE_NAME).
+                mapToList(new Func1<Cursor, Movie>() {
+                    @Override
+                    public Movie call(Cursor cursor) {
+                        return MovieDb.MovieTable.parseCursor(cursor);
+                    }
+                });
+        }
 
 }
