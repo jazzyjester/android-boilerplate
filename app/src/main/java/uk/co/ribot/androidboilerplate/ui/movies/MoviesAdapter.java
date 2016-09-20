@@ -30,11 +30,17 @@ import uk.co.ribot.androidboilerplate.data.model.Movie;
 
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder> {
 
+    private MoviesAdapterListener mListener;
     private List<Movie> mMovies;
 
     @Inject
     public MoviesAdapter() {
         mMovies = new ArrayList<>();
+    }
+
+    public MoviesAdapter(MoviesAdapterListener listener) {
+        mMovies = new ArrayList<>();
+        mListener = listener;
     }
 
     public void setMovies(List<Movie> movies) {
@@ -49,7 +55,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     }
 
     @Override
-    public void onBindViewHolder(final MoviesViewHolder holder, int position) {
+    public void onBindViewHolder(final MoviesViewHolder holder, final int position) {
         Movie movie = mMovies.get(position);
         //holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
         holder.titleTextView.setText(String.format("%s", movie.title()));
@@ -57,7 +63,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
         Context context = holder.titleTextView.getContext();
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mListener.onMovieLongPressClick(v,mMovies.get(position));
+                return true;
+            }
+        });
+
         setThumbnail(context,holder,mMovies.get(position));
+
 
     }
 

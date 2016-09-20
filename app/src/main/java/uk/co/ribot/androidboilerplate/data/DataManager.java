@@ -28,7 +28,7 @@ public class DataManager {
     private final PreferencesHelper mPreferencesHelper;
 
     @Inject
-    public DataManager(RibotsService ribotsService,MoviesService movieService, PreferencesHelper preferencesHelper,
+    public DataManager(RibotsService ribotsService, MoviesService movieService, PreferencesHelper preferencesHelper,
                        DatabaseHelper databaseHelper) {
         mRibotsService = ribotsService;
         mPreferencesHelper = preferencesHelper;
@@ -56,6 +56,17 @@ public class DataManager {
         return mDatabaseHelper.getRibots().distinct();
     }
 
+
+    public Observable<List<Movie>> getMoviesByQuery(String query) {
+        return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24", query, 30)
+                .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
+                    @Override
+                    public Observable<List<Movie>> call(MovieResults movieResults) {
+                        return Observable.just(movieResults.movies());
+                    }
+                });
+    }
+
     public Observable<List<Movie>> getMovies() {
 
         //List<Movie> list = new ArrayList<>();
@@ -63,6 +74,7 @@ public class DataManager {
         //list.add(Movie.create("2","Title 2",2015));
         //list.add(Movie.create("3","Title 3",2016));
 
+        /*
         return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24","Hacking",30)
                 .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
                     @Override
@@ -71,6 +83,18 @@ public class DataManager {
                         return Observable.just(movieResults.movies());
                     }
                 });
+
+
+        */
+
+        return mDatabaseHelper.getMovies();
+
+    }
+
+    public Observable<Movie> saveMovieToDb(Movie movie) {
+
+        return mDatabaseHelper.addMovie(movie);
+
 
     }
 

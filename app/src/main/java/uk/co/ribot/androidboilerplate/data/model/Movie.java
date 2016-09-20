@@ -21,7 +21,7 @@ public abstract class Movie implements Parcelable {
     }
 
     public static Builder builder() {
-        return AutoValue_Movie.builder();
+        return new AutoValue_Movie.Builder();
     }
 
     public static TypeAdapter<Movie> typeAdapter(Gson gson) {

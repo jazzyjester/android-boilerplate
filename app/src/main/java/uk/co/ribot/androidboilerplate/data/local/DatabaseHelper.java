@@ -32,6 +32,28 @@ public class DatabaseHelper {
         return mDb;
     }
 
+
+    public Observable<Movie> addMovie(final Movie movie)
+    {
+        return Observable.create(new Observable.OnSubscribe<Movie>() {
+            @Override
+            public void call(Subscriber<? super Movie> subscriber) {
+
+                BriteDatabase.Transaction transaction = mDb.newTransaction();
+
+                try {
+                    mDb.insert(MovieDb.MovieTable.TABLE_NAME, MovieDb.MovieTable.toContentValues(movie), SQLiteDatabase.CONFLICT_REPLACE);
+                    transaction.markSuccessful();
+                    subscriber.onCompleted();
+                }
+                finally {
+                    transaction.end();
+                }
+
+            }
+        });
+    }
+
     public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
         return Observable.create(new Observable.OnSubscribe<Ribot>() {
             @Override

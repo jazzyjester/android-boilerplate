@@ -20,6 +20,7 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
+    private boolean mShowingMyMoviesState = true;
 
     @Inject
     public MoviesPresenter(DataManager dataManager) {
@@ -33,8 +34,71 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
 
     @Override
     public void detachView() {
-        super.detachView();
         if (mSubscription != null) mSubscription.unsubscribe();
+        super.detachView();
+    }
+
+    public void saveMovie(Movie movie) {
+
+        mSubscription = mDataManager.saveMovieToDb(movie)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Movie>() {
+                    @Override
+                    public void onCompleted() {
+
+                        Timber.d("a");
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("a");
+
+                    }
+
+                    @Override
+                    public void onNext(Movie movie) {
+
+                        Timber.d("a");
+                    }
+                });
+
+
+    }
+
+    public void loadMoviesByQuery(String query) {
+        checkViewAttached();
+        RxUtil.unsubscribe(mSubscription);
+        mSubscription = mDataManager.getMoviesByQuery(query)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<Movie>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "There was an error loading the movies.");
+                        getMvpView().showError();
+
+                    }
+
+                    @Override
+                    public void onNext(List<Movie> movies) {
+
+                        if (movies.isEmpty()) {
+                            if (isViewAttached()) getMvpView().showMoviesEmpty();
+                        } else {
+                            getMvpView().showMovies(movies);
+                        }
+
+
+                    }
+                });
+
     }
 
     public void loadMovies() {
@@ -69,6 +133,24 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
                     }
                 });
 
+
+    }
+
+
+    public void toggleMoviesState() {
+        mShowingMyMoviesState = !mShowingMyMoviesState;
+
+        if (mShowingMyMoviesState) {
+
+            getMvpView().enterStateMyMovies();
+            loadMovies();
+
+
+        } else {
+            getMvpView().enterStateSearch();
+            getMvpView().showMoviesEmpty();
+
+        }
 
 
     }

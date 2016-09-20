@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidBoilerPlate</string>
+    <string name="app_name">Movies Catalog</string>
 
     <string name="action_settings">Settings</string>
 
@@ -10,4 +10,7 @@
     <string name="empty_ribots">There aren\'t any ribots</string>
     <string name="empty_movies">There aren\'t any movies</string>
     <string name="error_loading_ribots">There was a problem loading the ribots</string>
+
+    <string name="toolbar_title_my_movies">My Movies</string>
+    <string name="toolbar_title_search_movie">Search Movie</string>
 </resources>
