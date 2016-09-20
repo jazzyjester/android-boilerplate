@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import uk.co.ribot.androidboilerplate.data.remote.MoviesService;
 import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 
@@ -38,4 +39,9 @@ public class ApplicationModule {
         return RibotsService.Creator.newRibotsService();
     }
 
+    @Provides
+    @Singleton
+    MoviesService provideMoviesService() {
+        return MoviesService.Creator.newMoviesService();
+    }
 }

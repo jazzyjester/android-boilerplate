@@ -10,10 +10,13 @@ import android.os.IBinder;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.BoilerplateApplication;
+import uk.co.ribot.androidboilerplate.data.model.Movie;
+import uk.co.ribot.androidboilerplate.data.model.MovieResults;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.util.AndroidComponentUtil;
 import uk.co.ribot.androidboilerplate.util.NetworkUtil;
@@ -49,6 +52,7 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
+        /*
         mSubscription = mDataManager.syncRibots()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Ribot>() {
@@ -69,6 +73,31 @@ public class SyncService extends Service {
                     public void onNext(Ribot ribot) {
                     }
                 });
+                */
+
+        mSubscription = mDataManager.syncMovies()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<MovieResults>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.d("a");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("a");
+                    }
+
+                    @Override
+                    public void onNext(MovieResults movie) {
+
+                        Timber.d("a");
+
+                    }
+                });
+
+
+
 
         return START_STICKY;
     }

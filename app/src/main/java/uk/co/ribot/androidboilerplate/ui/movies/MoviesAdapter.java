@@ -1,10 +1,21 @@
 package uk.co.ribot.androidboilerplate.ui.movies;
 
+import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 
@@ -42,7 +54,45 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         //holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
         holder.titleTextView.setText(String.format("%s", movie.title()));
         holder.yearTextView.setText(String.format("%s", movie.year()));
+
+        Context context = holder.titleTextView.getContext();
+
+        setThumbnail(context,holder,mMovies.get(position));
+
     }
+
+    private void setThumbnail(Context context, MoviesViewHolder viewHolder, Movie movie) {
+        if (viewHolder.movieImageView != null) {
+            final String thumbnailUrl = movie.posters().thumbnail();
+            if (thumbnailUrl != null) {
+                GlideUrl url = new GlideUrl(thumbnailUrl);
+
+                Glide.with(context)
+                        .load(url)
+                        .crossFade()
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .listener(new RequestListener<GlideUrl, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, GlideUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
+
+                                return true;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, GlideUrl model, Target<GlideDrawable> target,
+                                                           boolean isFromMemoryCache, boolean isFirstResource) {
+                                return false;
+                            }
+                        }).into(viewHolder.movieImageView);
+            } else {
+
+                Timber.e("Error...");
+
+            }
+        }
+    }
+
 
     @Override
     public int getItemCount() {
@@ -51,7 +101,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
 
     class MoviesViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.view_hex_color) View hexColorView;
+
+        @BindView(R.id.movie_image) ImageView movieImageView;
         @BindView(R.id.movie_title) TextView titleTextView;
         @BindView(R.id.movie_year) TextView yearTextView;
 

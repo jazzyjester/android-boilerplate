@@ -53,9 +53,9 @@ public class MoviesActivity extends BaseActivity implements MoviesMvpView {
         mMoviesPresenter.attachView(this);
         mMoviesPresenter.loadMovies();
 
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
-        }
+        //if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+        //    startService(SyncService.getStartIntent(this));
+        //}
     }
 
     @Override

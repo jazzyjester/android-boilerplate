@@ -10,25 +10,30 @@ import javax.inject.Singleton;
 
 import rx.Observable;
 import rx.functions.Func1;
+import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.data.local.DatabaseHelper;
 import uk.co.ribot.androidboilerplate.data.local.PreferencesHelper;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
+import uk.co.ribot.androidboilerplate.data.model.MovieResults;
 import uk.co.ribot.androidboilerplate.data.model.Ribot;
+import uk.co.ribot.androidboilerplate.data.remote.MoviesService;
 import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
 
 @Singleton
 public class DataManager {
 
     private final RibotsService mRibotsService;
+    private final MoviesService mMovieService;
     private final DatabaseHelper mDatabaseHelper;
     private final PreferencesHelper mPreferencesHelper;
 
     @Inject
-    public DataManager(RibotsService ribotsService, PreferencesHelper preferencesHelper,
+    public DataManager(RibotsService ribotsService,MoviesService movieService, PreferencesHelper preferencesHelper,
                        DatabaseHelper databaseHelper) {
         mRibotsService = ribotsService;
         mPreferencesHelper = preferencesHelper;
         mDatabaseHelper = databaseHelper;
+        mMovieService = movieService;
     }
 
     public PreferencesHelper getPreferencesHelper() {
@@ -53,14 +58,34 @@ public class DataManager {
 
     public Observable<List<Movie>> getMovies() {
 
-        List<Movie> list = new ArrayList<>();
-        list.add(Movie.create("1","Title 1",2014));
-        list.add(Movie.create("2","Title 2",2015));
-        list.add(Movie.create("3","Title 3",2016));
+        //List<Movie> list = new ArrayList<>();
+        //list.add(Movie.create("1","Title 1",2014));
+        //list.add(Movie.create("2","Title 2",2015));
+        //list.add(Movie.create("3","Title 3",2016));
 
-        return Observable.just(list);
+        return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24","Hacking",30)
+                .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
+                    @Override
+                    public Observable<List<Movie>> call(MovieResults movieResults) {
 
-        //return mDatabaseHelper.getMovies().distinct();
+                        return Observable.just(movieResults.movies());
+                    }
+                });
+
+    }
+
+    public Observable<MovieResults> syncMovies() {
+
+        /*
+        return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24","Hacking",30)
+                .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
+                    @Override
+                    public Observable<List<Movie>> call(MovieResults movieResults) {
+                        return null;
+                    }
+                });
+        */
+        return null;
     }
 
 
