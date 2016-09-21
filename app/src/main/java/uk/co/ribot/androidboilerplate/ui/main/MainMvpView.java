@@ -7,12 +7,6 @@ import uk.co.ribot.androidboilerplate.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
-    void toggleSearch(boolean isShow);
-
-    void setFloatingActionBarIcon(int resID);
-
-    void setActionBarTitle(int resID);
-
     void showMyMoviesPage();
 
     void showMovieSearchPage();

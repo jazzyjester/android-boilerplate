@@ -32,7 +32,7 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
     public void attachView(MoviesMvpView mvpView) {
         super.attachView(mvpView);
 
-        getMvpView().showMovieSearchPage();
+        getMvpView().showMoviesEmpty();
     }
 
     @Override
@@ -85,7 +85,6 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the movies.");
-                        getMvpView().showError();
 
                     }
 
@@ -119,7 +118,6 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the movies.");
-                        getMvpView().showError();
 
                     }
 
@@ -139,26 +137,5 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
 
     }
 
-
-    public void toggleMoviesState() {
-        mShowingMyMoviesState = !mShowingMyMoviesState;
-
-        if (mShowingMyMoviesState) {
-
-            getMvpView().toggleSearch(false);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_my_movies);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_search_black_24dp);
-            loadMovies();
-
-        } else {
-            getMvpView().toggleSearch(true);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_search_movie);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_apps_black_24dp);
-            getMvpView().showMoviesEmpty();
-
-        }
-
-
-    }
 
 }

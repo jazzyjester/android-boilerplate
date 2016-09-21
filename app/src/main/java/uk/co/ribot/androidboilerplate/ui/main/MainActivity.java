@@ -22,18 +22,12 @@ import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
 import uk.co.ribot.androidboilerplate.ui.movies.MoviesFragment;
 import uk.co.ribot.androidboilerplate.ui.search.MoviesSearchFragment;
 
-public class MainActivity extends BaseActivity implements MainMvpView,MoviesSearchFragment.MoviesSearchListener {
+public class MainActivity extends BaseActivity implements MainMvpView,MainFragmentListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "uk.co.ribot.androidboilerplate.ui.main.MoviesActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject MainPresenter mMainPresenter;
-
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.fab) FloatingActionButton mFab;
-
-    private MenuItem mActionSearch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,45 +36,15 @@ public class MainActivity extends BaseActivity implements MainMvpView,MoviesSear
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.toolbar_title_my_movies));
+        //getSupportActionBar().setTitle(getString(R.string.toolbar_title_my_movies));
 
         mMainPresenter.attachView(this);
 
-
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMainPresenter.toggleMoviesState();
-            }
-        });
-
-
-
-        //if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-        //    startService(SyncService.getStartIntent(this));
-        //}
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-
-    @Override
-    public void toggleSearch(boolean isShow) {
-        mActionSearch.setVisible(isShow);
-    }
-
-    @Override
-    public void setFloatingActionBarIcon(int resID) {
-        mFab.setImageDrawable(getResources().getDrawable(resID));
-    }
-
-    @Override
-    public void setActionBarTitle(int resID) {
-        getSupportActionBar().setTitle(getString(resID));
     }
 
     @Override
@@ -96,11 +60,11 @@ public class MainActivity extends BaseActivity implements MainMvpView,MoviesSear
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.dashboard, menu);
-
-        mActionSearch = menu.findItem(R.id.action_search);
-        mActionSearch.setVisible(false);
+//        MenuInflater menuInflater = getMenuInflater();
+//        menuInflater.inflate(R.menu.dashboard, menu);
+//
+//        mActionSearch = menu.findItem(R.id.action_search);
+//        mActionSearch.setVisible(false);
 
 //        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
 //
@@ -140,12 +104,13 @@ public class MainActivity extends BaseActivity implements MainMvpView,MoviesSear
     }
 
     private void setMainFragment(Fragment fragment, String tag) {
-        // TODO: Recycle fragments, instead of creating new ones each time.
         getSupportFragmentManager().beginTransaction().replace(R.id.main_app_hook, fragment, tag).commit();
     }
 
     @Override
-    public MenuItem getSearchItem() {
-        return mActionSearch;
+    public void FloatingButtonClick() {
+        mMainPresenter.showPageAndSwitch();
+
+        Timber.d("Toggle...");
     }
 }

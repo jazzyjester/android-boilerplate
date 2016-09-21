@@ -32,7 +32,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void attachView(MainMvpView mvpView) {
         super.attachView(mvpView);
 
-        getMvpView().showMyMoviesPage();
+        showPage();
     }
 
     @Override
@@ -41,20 +41,26 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         super.detachView();
     }
 
-    public void toggleMoviesState() {
+    private void switchMoviesState()
+    {
         mShowingMyMoviesState = !mShowingMyMoviesState;
+
+    }
+
+    public void showPageAndSwitch()
+    {
+        switchMoviesState();
+        showPage();
+    }
+
+    public void showPage() {
 
         if (mShowingMyMoviesState) {
 
-            getMvpView().toggleSearch(false);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_my_movies);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_search_black_24dp);
             getMvpView().showMyMoviesPage();
 
         } else {
-            getMvpView().toggleSearch(true);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_search_movie);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_apps_black_24dp);
+
             getMvpView().showMovieSearchPage();
 
         }

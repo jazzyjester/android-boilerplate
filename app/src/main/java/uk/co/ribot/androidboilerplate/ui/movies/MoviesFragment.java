@@ -1,59 +1,40 @@
 package uk.co.ribot.androidboilerplate.ui.movies;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.Collections;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
+import uk.co.ribot.androidboilerplate.ui.base.BaseFragment;
 
-
-public class MoviesFragment extends Fragment implements MoviesMvpView, MoviesAdapterListener {
+public class MoviesFragment extends BaseFragment implements MoviesMvpView {
 
     @Inject MoviesPresenter mMoviesPresenter;
-    @Inject MoviesAdapter mMoviesAdapter;
-
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
     public MoviesFragment() {
     }
-
-    public static MoviesFragment newInstance() {
-        MoviesFragment fragment = new MoviesFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseActivity) getActivity()).activityComponent().inject(this);
 
-        mMoviesAdapter.setListener(this);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_movies_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_movies, container, false);
         ButterKnife.bind(this,view);
 
         return view;
@@ -62,30 +43,10 @@ public class MoviesFragment extends Fragment implements MoviesMvpView, MoviesAda
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        mRecyclerView.setAdapter(mMoviesAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        super.onViewCreated(view,savedInstanceState);
+
         mMoviesPresenter.attachView(this);
         mMoviesPresenter.loadMovies();
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
-    public void onMovieLongPressClick(View view, Movie movie) {
-
-    }
-
-    @Override
-    public void showError() {
 
     }
 
@@ -104,27 +65,16 @@ public class MoviesFragment extends Fragment implements MoviesMvpView, MoviesAda
     }
 
     @Override
-    public void toggleSearch(boolean isShow) {
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    protected Toolbar getToolbar() {
+        return mToolbar;
     }
 
     @Override
-    public void setFloatingActionBarIcon(int resID) {
-
-    }
-
-    @Override
-    public void setActionBarTitle(int resID) {
-
-    }
-
-    @Override
-    public void showMyMoviesPage() {
-
-    }
-
-    @Override
-    public void showMovieSearchPage() {
-
+    protected String getTitle() {
+        return getString(R.string.toolbar_title_my_movies);
     }
 }
