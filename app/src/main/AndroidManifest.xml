@@ -11,14 +11,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name" >
-        </activity>
 
         <activity
-            android:name=".ui.movies.MoviesActivity"
+            android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name" >
             <intent-filter>

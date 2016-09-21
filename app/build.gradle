@@ -80,7 +80,7 @@ play {
 
 dependencies {
     final PLAY_SERVICES_VERSION = '9.2.0'
-    final SUPPORT_LIBRARY_VERSION = '24.0.0'
+    final SUPPORT_LIBRARY_VERSION = '24.2.1'
     final RETROFIT_VERSION = '2.1.0'
     final DAGGER_VERSION = '2.5'
     final DEXMAKER_VERSION = '1.4'
@@ -102,31 +102,26 @@ dependencies {
     compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:support-annotations:$SUPPORT_LIBRARY_VERSION"
 
-    compile 'com.squareup.sqlbrite:sqlbrite:0.5.0'
     compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
     compile "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
     compile "com.squareup.retrofit2:adapter-rxjava:$RETROFIT_VERSION"
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.1.6'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
         transitive = true;
     }
 
-    compile 'com.jakewharton.timber:timber:4.1.2'
     compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"
-    apt     "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
+    apt "com.jakewharton:butterknife-compiler:$BUTTERKNIFE_VERSION"
 
     // Replace provided dependency below with official AutoValue once this issue is fixed
     // https://github.com/google/auto/issues/268
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.2-update1'
-    apt      "com.google.auto.value:auto-value:$AUTO_VALUE_VERSION"
-    apt      'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
-    apt      'com.ryanharter.auto.value:auto-value-gson:0.3.2-rc1'
-    apt      'com.squareup:javapoet:1.7.0' // https://github.com/rharter/auto-value-parcel/issues/64
+    apt "com.google.auto.value:auto-value:$AUTO_VALUE_VERSION"
+    apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.3-rc2'
+    apt 'com.ryanharter.auto.value:auto-value-gson:0.3.2-rc1'
+    apt 'com.squareup:javapoet:1.7.0' // https://github.com/rharter/auto-value-parcel/issues/64
 
-    compile  "com.google.dagger:dagger:$DAGGER_VERSION"
+    compile "com.google.dagger:dagger:$DAGGER_VERSION"
     provided 'org.glassfish:javax.annotation:10.0-b28' //Required by Dagger2
     apt daggerCompiler
     testApt daggerCompiler
@@ -155,10 +150,16 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
     testCompile "org.hamcrest:hamcrest-integration:$HAMCREST_VERSION"
     testCompile 'org.robolectric:robolectric:3.1'
+    compile 'com.squareup.sqlbrite:sqlbrite:0.5.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.android.support:support-v4:24.2.1'
 }
 
 // Log out test results to console
-tasks.matching {it instanceof Test}.all {
+tasks.matching { it instanceof Test }.all {
     testLogging.events = ["failed", "passed", "skipped"]
 }
 

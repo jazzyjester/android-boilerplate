@@ -38,8 +38,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         mMovies = new ArrayList<>();
     }
 
-    public MoviesAdapter(MoviesAdapterListener listener) {
-        mMovies = new ArrayList<>();
+    public void setListener(MoviesAdapterListener listener) {
         mListener = listener;
     }
 

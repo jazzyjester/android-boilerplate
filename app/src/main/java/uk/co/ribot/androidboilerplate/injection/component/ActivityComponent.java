@@ -4,7 +4,8 @@ import dagger.Subcomponent;
 import uk.co.ribot.androidboilerplate.injection.PerActivity;
 import uk.co.ribot.androidboilerplate.injection.module.ActivityModule;
 import uk.co.ribot.androidboilerplate.ui.main.MainActivity;
-import uk.co.ribot.androidboilerplate.ui.movies.MoviesActivity;
+import uk.co.ribot.androidboilerplate.ui.movies.MoviesFragment;
+import uk.co.ribot.androidboilerplate.ui.search.MoviesSearchFragment;
 
 /**
  * This component inject dependencies to all Activities across the application
@@ -15,5 +16,7 @@ public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
 
-    void inject(MoviesActivity mainActivity);
+    void inject(MoviesFragment moviesSearchFragment);
+
+    void inject(MoviesSearchFragment moviesSearchFragment);
 }

@@ -1,4 +1,4 @@
-package uk.co.ribot.androidboilerplate.ui.movies;
+package uk.co.ribot.androidboilerplate.ui.search;
 
 import java.util.List;
 
@@ -14,25 +14,24 @@ import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
+import uk.co.ribot.androidboilerplate.ui.movies.MoviesMvpView;
 import uk.co.ribot.androidboilerplate.util.RxUtil;
 
 @ConfigPersistent
-public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
+public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
-    private boolean mShowingMyMoviesState = true;
 
     @Inject
-    public MoviesPresenter(DataManager dataManager) {
+    public MoviesSearchPresenter(DataManager dataManager) {
         mDataManager = dataManager;
     }
 
     @Override
-    public void attachView(MoviesMvpView mvpView) {
+    public void attachView(MoviesSearchMvpView mvpView) {
         super.attachView(mvpView);
 
-        getMvpView().showMovieSearchPage();
     }
 
     @Override
@@ -85,7 +84,6 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the movies.");
-                        getMvpView().showError();
 
                     }
 
@@ -119,7 +117,6 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the movies.");
-                        getMvpView().showError();
 
                     }
 
@@ -140,25 +137,5 @@ public class MoviesPresenter extends BasePresenter<MoviesMvpView> {
     }
 
 
-    public void toggleMoviesState() {
-        mShowingMyMoviesState = !mShowingMyMoviesState;
-
-        if (mShowingMyMoviesState) {
-
-            getMvpView().toggleSearch(false);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_my_movies);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_search_black_24dp);
-            loadMovies();
-
-        } else {
-            getMvpView().toggleSearch(true);
-            getMvpView().setActionBarTitle(R.string.toolbar_title_search_movie);
-            getMvpView().setFloatingActionBarIcon(R.drawable.ic_apps_black_24dp);
-            getMvpView().showMoviesEmpty();
-
-        }
-
-
-    }
 
 }

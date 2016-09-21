@@ -2,15 +2,20 @@ package uk.co.ribot.androidboilerplate.ui.main;
 
 import java.util.List;
 
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
+import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
-    void showRibots(List<Ribot> ribots);
+    void toggleSearch(boolean isShow);
 
-    void showRibotsEmpty();
+    void setFloatingActionBarIcon(int resID);
 
-    void showError();
+    void setActionBarTitle(int resID);
+
+    void showMyMoviesPage();
+
+    void showMovieSearchPage();
+
 
 }

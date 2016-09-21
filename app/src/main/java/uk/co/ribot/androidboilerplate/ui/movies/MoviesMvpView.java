@@ -13,11 +13,15 @@ public interface MoviesMvpView extends MvpView {
 
     void showMoviesEmpty();
 
-    void enterStateMyMovies();
-
-    void enterStateSearch();
-
     void toggleSearch(boolean isShow);
+
+    void setFloatingActionBarIcon(int resID);
+
+    void setActionBarTitle(int resID);
+
+    void showMyMoviesPage();
+
+    void showMovieSearchPage();
 
 
 }

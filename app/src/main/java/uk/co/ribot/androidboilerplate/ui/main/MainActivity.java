@@ -1,48 +1,39 @@
 package uk.co.ribot.androidboilerplate.ui.main;
 
+import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import java.util.Collections;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
-import uk.co.ribot.androidboilerplate.util.DialogFactory;
+import uk.co.ribot.androidboilerplate.ui.movies.MoviesFragment;
+import uk.co.ribot.androidboilerplate.ui.search.MoviesSearchFragment;
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+public class MainActivity extends BaseActivity implements MainMvpView,MoviesSearchFragment.MoviesSearchListener {
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "uk.co.ribot.androidboilerplate.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+            "uk.co.ribot.androidboilerplate.ui.main.MoviesActivity.EXTRA_TRIGGER_SYNC_FLAG";
 
     @Inject MainPresenter mMainPresenter;
-    @Inject RibotsAdapter mRibotsAdapter;
 
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.fab) FloatingActionButton mFab;
 
-    /**
-     * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
-     */
-    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
-        return intent;
-    }
+    private MenuItem mActionSearch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +42,20 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mRecyclerView.setAdapter(mRibotsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getString(R.string.toolbar_title_my_movies));
+
         mMainPresenter.attachView(this);
-        mMainPresenter.loadRibots();
+
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMainPresenter.toggleMoviesState();
+            }
+        });
+
+
 
         //if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
         //    startService(SyncService.getStartIntent(this));
@@ -64,29 +65,87 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        mMainPresenter.detachView();
     }
 
-    /***** MVP View methods implementation *****/
 
     @Override
-    public void showRibots(List<Ribot> ribots) {
-        mRibotsAdapter.setRibots(ribots);
-        mRibotsAdapter.notifyDataSetChanged();
+    public void toggleSearch(boolean isShow) {
+        mActionSearch.setVisible(isShow);
     }
 
     @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
-                .show();
+    public void setFloatingActionBarIcon(int resID) {
+        mFab.setImageDrawable(getResources().getDrawable(resID));
     }
 
     @Override
-    public void showRibotsEmpty() {
-        mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
-        mRibotsAdapter.notifyDataSetChanged();
-        Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
+    public void setActionBarTitle(int resID) {
+        getSupportActionBar().setTitle(getString(resID));
     }
 
+    @Override
+    public void showMyMoviesPage() {
+        setMainFragment(new MoviesFragment(), MoviesFragment.class.getSimpleName());
+    }
+
+    @Override
+    public void showMovieSearchPage() {
+        setMainFragment(new MoviesSearchFragment(), MoviesSearchFragment.class.getSimpleName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.dashboard, menu);
+
+        mActionSearch = menu.findItem(R.id.action_search);
+        mActionSearch.setVisible(false);
+
+//        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+//
+//        SearchView searchView = (SearchView) mActionSearch.getActionView();
+//
+//        if (searchView != null) {
+//            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+//
+//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//                @Override
+//                public boolean onQueryTextSubmit(String query) {
+//
+//                    Timber.d(query);
+//
+//                    //mMoviesPresenter.loadMoviesByQuery(query);
+//
+//
+//
+//
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean onQueryTextChange(String newText) {
+//
+//                    Timber.d(newText);
+//
+//                    return false;
+//                }
+//            });
+//
+//        }
+//
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    private void setMainFragment(Fragment fragment, String tag) {
+        // TODO: Recycle fragments, instead of creating new ones each time.
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_app_hook, fragment, tag).commit();
+    }
+
+    @Override
+    public MenuItem getSearchItem() {
+        return mActionSearch;
+    }
 }

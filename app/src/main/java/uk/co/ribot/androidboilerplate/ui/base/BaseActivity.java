@@ -66,7 +66,27 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public ActivityComponent activityComponent() {
+        if (mActivityComponent == null) {
+            createActivityComponent();
+        }
         return mActivityComponent;
     }
+
+    private void createActivityComponent() {
+        ConfigPersistentComponent configPersistentComponent;
+        if (!sComponentsMap.containsKey(mActivityId)) {
+            Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
+            configPersistentComponent = DaggerConfigPersistentComponent.builder()
+                    .applicationComponent(BoilerplateApplication.get(this).getComponent())
+                    .build();
+            sComponentsMap.put(mActivityId, configPersistentComponent);
+        } else {
+            Timber.i("Reusing ConfigPersistentComponent id=%d", mActivityId);
+            configPersistentComponent = sComponentsMap.get(mActivityId);
+        }
+        mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
+    }
+
+
 
 }
