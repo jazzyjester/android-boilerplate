@@ -65,7 +65,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mListener.onMovieLongPressClick(v,mMovies.get(position));
+                if (mListener != null) {
+                    mListener.onMovieLongPressClick(v, mMovies.get(position));
+                }
                 return true;
             }
         });

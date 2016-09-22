@@ -1,20 +1,11 @@
 package uk.co.ribot.androidboilerplate.ui.main;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
@@ -104,7 +95,10 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     private void setMainFragment(Fragment fragment, String tag) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_app_hook, fragment, tag).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_app_hook, fragment, tag)
+                .commit();
     }
 
     @Override

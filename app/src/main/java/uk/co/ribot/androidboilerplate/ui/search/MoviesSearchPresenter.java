@@ -50,6 +50,7 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
                     public void onCompleted() {
 
                         Timber.d("a");
+                        getMvpView().showMessageMovieSaved();
 
                     }
 
@@ -70,6 +71,9 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
     }
 
     public void loadMoviesByQuery(String query) {
+
+        getMvpView().showProgressBar();
+        getMvpView().showMoviesEmpty();
         checkViewAttached();
         RxUtil.unsubscribe(mSubscription);
         mSubscription = mDataManager.getMoviesByQuery(query)
@@ -78,12 +82,13 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
                 .subscribe(new Subscriber<List<Movie>>() {
                     @Override
                     public void onCompleted() {
-
+                        getMvpView().hideProgressBar();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the movies.");
+                        getMvpView().hideProgressBar();
 
                     }
 
@@ -94,6 +99,7 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
                             if (isViewAttached()) getMvpView().showMoviesEmpty();
                         } else {
                             getMvpView().showMovies(movies);
+                            getMvpView().hideProgressBar();
                         }
 
 

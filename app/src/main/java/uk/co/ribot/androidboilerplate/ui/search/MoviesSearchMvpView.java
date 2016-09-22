@@ -11,4 +11,10 @@ public interface MoviesSearchMvpView extends MvpView {
 
     void showMoviesEmpty();
 
+    void showProgressBar();
+
+    void hideProgressBar();
+
+    void showMessageMovieSaved();
+
 }

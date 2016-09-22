@@ -2,6 +2,9 @@ package uk.co.ribot.androidboilerplate.ui.movies;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +14,8 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
@@ -19,7 +24,13 @@ import uk.co.ribot.androidboilerplate.ui.base.BaseFragment;
 
 public class MoviesFragment extends BaseFragment implements MoviesMvpView {
 
+
     @Inject MoviesPresenter mMoviesPresenter;
+    @Inject MoviesAdapter  mMoviesAdapter;
+
+    @BindView(R.id.recycler_view) protected RecyclerView mRecyclerView;
+    @BindView(R.id.fab) protected FloatingActionButton mFab;
+
 
     public MoviesFragment() {
     }
@@ -36,6 +47,16 @@ public class MoviesFragment extends BaseFragment implements MoviesMvpView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
         ButterKnife.bind(this,view);
+
+        mRecyclerView.setAdapter(mMoviesAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mFragmentListener.FloatingButtonClick();
+            }
+        });
 
         return view;
     }
