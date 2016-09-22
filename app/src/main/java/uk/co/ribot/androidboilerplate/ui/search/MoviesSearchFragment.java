@@ -40,7 +40,7 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
 
     @BindView(R.id.progressbar) ProgressBar mProgressBar;
     @BindView(R.id.recycler_view) protected RecyclerView mRecyclerView;
-    @BindView(R.id.fab) protected FloatingActionButton mFab;
+    @BindView(R.id.fabMovies) protected FloatingActionButton mFabMovies;
 
     private MenuItem mSearchItem;
 
@@ -66,10 +66,10 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
         mRecyclerView.setAdapter(mMoviesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFabMovies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.FloatingButtonClick();
+                mFragmentListener.FloatingButtonMoviesClick();
             }
         });
 

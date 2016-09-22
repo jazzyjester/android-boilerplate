@@ -7,9 +7,11 @@ import uk.co.ribot.androidboilerplate.ui.base.MvpView;
 
 public interface MainMvpView extends MvpView {
 
-    void showMyMoviesPage();
+    void showMyMovies();
 
-    void showMovieSearchPage();
+    void showMovieSearch();
+
+    void showMovieEditor();
 
 
 }

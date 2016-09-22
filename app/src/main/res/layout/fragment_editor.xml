@@ -21,7 +21,6 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,30 +33,14 @@
                     tools:context=".ui.main.MainActivity"
                     tools:showIn="@layout/activity_main">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="6dp"
-            android:paddingTop="6dp"
-            android:scrollbars="vertical" />
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabSearch"
+        android:id="@+id/fabMovies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_search_black_24dp"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabEditor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_black_24dp"/>
+        android:src="@drawable/ic_apps_black_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

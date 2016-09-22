@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
+import uk.co.ribot.androidboilerplate.ui.editor.MoviesEditorFragment;
 import uk.co.ribot.androidboilerplate.ui.movies.MoviesFragment;
 import uk.co.ribot.androidboilerplate.ui.search.MoviesSearchFragment;
 
@@ -39,59 +40,23 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     @Override
-    public void showMyMoviesPage() {
+    public void showMyMovies() {
         setMainFragment(new MoviesFragment(), MoviesFragment.class.getSimpleName());
     }
 
     @Override
-    public void showMovieSearchPage() {
+    public void showMovieSearch() {
         setMainFragment(new MoviesSearchFragment(), MoviesSearchFragment.class.getSimpleName());
     }
 
     @Override
+    public void showMovieEditor() {
+        setMainFragment(new MoviesEditorFragment(), MoviesEditorFragment.class.getSimpleName());
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.dashboard, menu);
-//
-//        mActionSearch = menu.findItem(R.id.action_search);
-//        mActionSearch.setVisible(false);
-
-//        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
-//
-//        SearchView searchView = (SearchView) mActionSearch.getActionView();
-//
-//        if (searchView != null) {
-//            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-//
-//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//
-//                @Override
-//                public boolean onQueryTextSubmit(String query) {
-//
-//                    Timber.d(query);
-//
-//                    //mMoviesPresenter.loadMoviesByQuery(query);
-//
-//
-//
-//
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onQueryTextChange(String newText) {
-//
-//                    Timber.d(newText);
-//
-//                    return false;
-//                }
-//            });
-//
-//        }
-//
         return super.onCreateOptionsMenu(menu);
-
     }
 
     private void setMainFragment(Fragment fragment, String tag) {
@@ -102,9 +67,20 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     @Override
-    public void FloatingButtonClick() {
-        mMainPresenter.showPageAndSwitch();
-
+    public void FloatingButtonSearchClick() {
+        mMainPresenter.showMoviesSearch();
         Timber.d("Toggle...");
+    }
+
+    @Override
+    public void FloatingButtonEditorClick() {
+
+        mMainPresenter.showMoviesEditor();
+        Timber.d("Toggle...");
+    }
+
+    @Override
+    public void FloatingButtonMoviesClick() {
+        mMainPresenter.showMovies();
     }
 }
