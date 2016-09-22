@@ -1,6 +1,8 @@
 package uk.co.ribot.androidboilerplate.ui.main;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 
@@ -80,20 +82,20 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     @Override
-    public void floatingButtonSearchClick() {
+    public void showMoviesSearch() {
         mMainPresenter.showMoviesSearch();
         Timber.d("Toggle...");
     }
 
     @Override
-    public void floatingButtonEditorClick() {
+    public void showMoviesEditor() {
 
         mMainPresenter.showMoviesEditor();
         Timber.d("Toggle...");
     }
 
     @Override
-    public void floatingButtonMoviesClick() {
+    public void showMovies() {
         mMainPresenter.showMovies();
     }
 
@@ -102,6 +104,18 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
 
         Timber.d("Edit Movie : " + movie.title());
         mMainPresenter.editMovie(movie);
+
+    }
+
+    @Override
+    public void showSnackBarMessage(final String message) {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(findViewById(R.id.main_app_hook),message,Snackbar.LENGTH_SHORT).show();
+            }
+        },100);
 
     }
 }

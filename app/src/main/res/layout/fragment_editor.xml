@@ -36,7 +36,7 @@
 
         <include layout="@layout/fragment_editor_content_subject"/>
         <include layout="@layout/fragment_editor_content_body"/>
-        <include layout="@layout/fragment_editor_content_url"/>
+        <include layout="@layout/fragment_editor_content_year"/>
         <include layout="@layout/fragment_editor_content_actions"/>
 
 

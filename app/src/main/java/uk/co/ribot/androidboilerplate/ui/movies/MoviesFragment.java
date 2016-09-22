@@ -55,14 +55,14 @@ public class MoviesFragment extends BaseFragment implements MoviesMvpView,Movies
         mFabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.floatingButtonSearchClick();
+                mFragmentListener.showMoviesSearch();
             }
         });
 
         mFabEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.floatingButtonEditorClick();
+                mFragmentListener.showMoviesEditor();
             }
         });
 

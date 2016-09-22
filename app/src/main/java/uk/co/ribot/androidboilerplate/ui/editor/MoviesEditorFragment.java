@@ -3,10 +3,13 @@ package uk.co.ribot.androidboilerplate.ui.editor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import javax.inject.Inject;
 
@@ -23,9 +26,14 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
 
     @Inject MoviesEditorPresenter mMoviesSearchPresenter;
 
-    @BindView(R.id.fabMovies) protected FloatingActionButton mFabMovies;
+    @BindView(R.id.fabMovies) FloatingActionButton mFabMovies;
+    @BindView(R.id.movie_subject) EditText mMovieSubject;
+    @BindView(R.id.movie_body) EditText mMovieBody;
+    @BindView(R.id.movie_year) EditText mMovieYear;
+    @BindView(R.id.button_ok) Button mMovieButtonOk;
+    @BindView(R.id.button_cancel) Button mMovieButtonCancel;
 
-    Movie mCurrentMovie;
+    private Movie mCurrentMovie;
 
     public MoviesEditorFragment() {
     }
@@ -38,7 +46,6 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
 
         readArguments();
 
-
     }
 
     @Override
@@ -50,9 +57,17 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
         mFabMovies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.floatingButtonMoviesClick();
+                mFragmentListener.showMovies();
             }
         });
+
+        mMovieButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMoviesSearchPresenter.saveMovie(mCurrentMovie);
+            }
+        });
+
 
         return view;
     }
@@ -65,9 +80,47 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
         {
             mCurrentMovie = bundle.getParcelable(Movie.class.toString());
 
+
             Timber.d("Movie Loaded : " + mCurrentMovie.title());
         }
+    }
 
+    public void setSubject(String subject)
+    {
+        mMovieSubject.setText(subject);
+    }
+    public void setBody(String body)
+    {
+        mMovieBody.setText(body);
+    }
+    public void setYear(String year)
+    {
+        mMovieYear.setText(year);
+    }
+
+    @Override
+    public String getSubject() {
+        return mMovieSubject.getText().toString();
+    }
+
+    @Override
+    public String getBody() {
+        return mMovieBody.getText().toString();
+    }
+
+    @Override
+    public String getYear() {
+        return mMovieYear.getText().toString();
+    }
+
+    @Override
+    public void showUpdateMessage() {
+        mFragmentListener.showSnackBarMessage("Movie Updated.");
+    }
+
+    @Override
+    public void showMovies() {
+        mFragmentListener.showMovies();
     }
 
     @Override
@@ -75,6 +128,8 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
 
         super.onViewCreated(view,savedInstanceState);
         mMoviesSearchPresenter.attachView(this);
+
+        mMoviesSearchPresenter.populateMovie(mCurrentMovie);
     }
 
 
@@ -86,5 +141,6 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     protected String getTitle() {
         return getString(R.string.toolbar_title_movie_add);
     }
+
 
 }

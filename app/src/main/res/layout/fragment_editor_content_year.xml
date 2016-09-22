@@ -23,23 +23,23 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/movie_url_title"
+                android:id="@+id/movie_year_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="@dimen/text_body"
-                android:text="Url" />
+                android:text="Year" />
 
             <EditText
-                android:id="@+id/movie_url"
+                android:id="@+id/movie_year"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
-                android:layout_toEndOf="@id/movie_url_title"
-                android:layout_toRightOf="@id/movie_url_title"
+                android:layout_toEndOf="@id/movie_year_title"
+                android:layout_toRightOf="@id/movie_year_title"
                 android:textSize="@dimen/text_small_body"
-                android:hint="Enter Movie Url..." />
+                android:hint="Enter Movie Year" />
 
         </RelativeLayout>
 

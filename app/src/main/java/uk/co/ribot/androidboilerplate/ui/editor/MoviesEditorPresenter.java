@@ -1,7 +1,5 @@
 package uk.co.ribot.androidboilerplate.ui.editor;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import rx.Subscriber;
@@ -13,7 +11,6 @@ import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
-import uk.co.ribot.androidboilerplate.util.RxUtil;
 
 @ConfigPersistent
 public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
@@ -38,6 +35,54 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
         super.detachView();
     }
 
+
+    public void populateMovie(Movie movie)
+    {
+        if (movie != null) {
+            getMvpView().setSubject(movie.title());
+            getMvpView().setBody(movie.body());
+            getMvpView().setYear(movie.year() + "");
+        }
+
+    }
+
+    public void saveMovie(Movie movie)
+    {
+
+        Movie updatedMovie =  Movie.builder()
+                .setBody(getMvpView().getBody())
+                .setPosters(movie.posters())
+                .setTitle(getMvpView().getSubject())
+                .setId(movie.id())
+                .setYear(Integer.parseInt(getMvpView().getYear()))
+                .build();
+
+        mSubscription = mDataManager.saveMovieToDb(updatedMovie)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Movie>() {
+                    @Override
+                    public void onCompleted() {
+
+                        getMvpView().showMovies();
+                        getMvpView().showUpdateMessage();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("a");
+
+                    }
+
+                    @Override
+                    public void onNext(Movie movie) {
+
+                        Timber.d("a");
+                    }
+                });
+
+    }
 
 
 }
