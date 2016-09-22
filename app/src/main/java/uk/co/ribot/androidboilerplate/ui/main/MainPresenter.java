@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import rx.Subscription;
 import uk.co.ribot.androidboilerplate.data.DataManager;
+import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
 
@@ -18,6 +19,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     private Subscription mSubscription;
     private int mCurrentState = STATE_MOVIES;
 
+    private boolean mDisableCreate;
 
 
     @Inject
@@ -28,8 +30,6 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     @Override
     public void attachView(MainMvpView mvpView) {
         super.attachView(mvpView);
-
-        showMovies();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         showState();
     }
 
-    private void showState() {
+    public void showState() {
 
         switch (mCurrentState)
         {
@@ -70,4 +70,11 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
             case STATE_MOVIES_EDITOR: getMvpView().showMovieEditor();break;
         }
     }
+    public void editMovie(Movie movie)
+    {
+            selectState(STATE_MOVIES_EDITOR);
+            getMvpView().showMovieEditor(movie);
+
+    }
+
 }

@@ -13,5 +13,7 @@ public interface MainMvpView extends MvpView {
 
     void showMovieEditor();
 
+    void showMovieEditor(Movie movie);
+
 
 }

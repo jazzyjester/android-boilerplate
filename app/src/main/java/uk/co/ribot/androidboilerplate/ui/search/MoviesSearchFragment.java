@@ -69,7 +69,7 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
         mFabMovies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.FloatingButtonMoviesClick();
+                mFragmentListener.floatingButtonMoviesClick();
             }
         });
 

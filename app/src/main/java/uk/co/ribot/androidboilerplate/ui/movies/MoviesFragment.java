@@ -22,7 +22,7 @@ import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
 import uk.co.ribot.androidboilerplate.ui.base.BaseFragment;
 
-public class MoviesFragment extends BaseFragment implements MoviesMvpView {
+public class MoviesFragment extends BaseFragment implements MoviesMvpView,MoviesAdapterListener {
 
 
     @Inject MoviesPresenter mMoviesPresenter;
@@ -55,14 +55,14 @@ public class MoviesFragment extends BaseFragment implements MoviesMvpView {
         mFabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.FloatingButtonSearchClick();
+                mFragmentListener.floatingButtonSearchClick();
             }
         });
 
         mFabEditor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentListener.FloatingButtonEditorClick();
+                mFragmentListener.floatingButtonEditorClick();
             }
         });
 
@@ -76,6 +76,8 @@ public class MoviesFragment extends BaseFragment implements MoviesMvpView {
 
         mMoviesPresenter.attachView(this);
         mMoviesPresenter.loadMovies();
+
+        mMoviesAdapter.setListener(this);
 
     }
 
@@ -104,5 +106,14 @@ public class MoviesFragment extends BaseFragment implements MoviesMvpView {
     @Override
     protected String getTitle() {
         return getString(R.string.toolbar_title_my_movies);
+    }
+
+    @Override
+    public void onMovieLongPressClick(View view, Movie movie) {
+
+        // edit movie
+        mFragmentListener.editMovie(movie);
+
+
     }
 }

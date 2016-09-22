@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
+import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
 import uk.co.ribot.androidboilerplate.ui.editor.MoviesEditorFragment;
 import uk.co.ribot.androidboilerplate.ui.movies.MoviesFragment;
@@ -28,9 +29,11 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //getSupportActionBar().setTitle(getString(R.string.toolbar_title_my_movies));
-
         mMainPresenter.attachView(this);
+        if (savedInstanceState == null)
+        {
+            mMainPresenter.showState();
+        }
 
     }
 
@@ -55,6 +58,16 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     @Override
+    public void showMovieEditor(Movie movie) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Movie.class.toString(),movie);
+        Fragment f = new MoviesEditorFragment();
+        f.setArguments(bundle);
+
+        setMainFragment(f, MoviesEditorFragment.class.getSimpleName());
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
     }
@@ -67,20 +80,28 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
     }
 
     @Override
-    public void FloatingButtonSearchClick() {
+    public void floatingButtonSearchClick() {
         mMainPresenter.showMoviesSearch();
         Timber.d("Toggle...");
     }
 
     @Override
-    public void FloatingButtonEditorClick() {
+    public void floatingButtonEditorClick() {
 
         mMainPresenter.showMoviesEditor();
         Timber.d("Toggle...");
     }
 
     @Override
-    public void FloatingButtonMoviesClick() {
+    public void floatingButtonMoviesClick() {
         mMainPresenter.showMovies();
+    }
+
+    @Override
+    public void editMovie(Movie movie) {
+
+        Timber.d("Edit Movie : " + movie.title());
+        mMainPresenter.editMovie(movie);
+
     }
 }

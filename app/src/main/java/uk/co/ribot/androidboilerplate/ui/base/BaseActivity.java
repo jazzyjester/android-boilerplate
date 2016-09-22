@@ -32,22 +32,12 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is
-        // being called after a configuration change.
+        // Create the ActivityComponent and reuses cached ConfigPersistentComponent if this is being called after a configuration change.
         mActivityId = savedInstanceState != null ?
                 savedInstanceState.getLong(KEY_ACTIVITY_ID) : NEXT_ID.getAndIncrement();
-        ConfigPersistentComponent configPersistentComponent;
-        if (!sComponentsMap.containsKey(mActivityId)) {
-            Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
-            configPersistentComponent = DaggerConfigPersistentComponent.builder()
-                    .applicationComponent(BoilerplateApplication.get(this).getComponent())
-                    .build();
-            sComponentsMap.put(mActivityId, configPersistentComponent);
-        } else {
-            Timber.i("Reusing ConfigPersistentComponent id=%d", mActivityId);
-            configPersistentComponent = sComponentsMap.get(mActivityId);
-        }
-        mActivityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
+        createActivityComponent();
+
+
     }
 
     @Override
