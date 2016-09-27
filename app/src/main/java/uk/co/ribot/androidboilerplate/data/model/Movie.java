@@ -16,7 +16,7 @@ public abstract class Movie implements Parcelable {
     public abstract String title();
     public abstract @Nullable String body();
     public abstract int year();
-    public abstract Posters posters();
+    public abstract @Nullable Posters posters();
 
     public static Movie create(String id, String title, @Nullable String body, int year, Posters posters) {
         return new AutoValue_Movie(id,title,body,year,posters);

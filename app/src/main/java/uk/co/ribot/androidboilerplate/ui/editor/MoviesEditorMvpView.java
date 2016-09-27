@@ -16,9 +16,13 @@ public interface MoviesEditorMvpView extends MvpView {
     String getBody();
     String getYear();
 
+    Movie createMovie();
     void showMovies();
     void showMessage(int messageID);
 
+    void setTitle(int titleID);
+    void hideDeleteButton();
     void deleteMovie(Movie movie);
+
 
 }

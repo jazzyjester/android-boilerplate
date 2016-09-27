@@ -20,6 +20,8 @@
             android:id="@+id/movie_image"
             android:layout_width="50dp"
             android:layout_marginRight="10dp"
+            android:src="@drawable/ic_query_builder_black_24dp"
+            android:layout_centerVertical="true"
             android:layout_height="50dp"/>
 
         <TextView

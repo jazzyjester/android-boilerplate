@@ -3,13 +3,14 @@ package uk.co.ribot.androidboilerplate.ui.editor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -18,13 +19,14 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
+import uk.co.ribot.androidboilerplate.data.model.Posters;
 import uk.co.ribot.androidboilerplate.ui.base.BaseActivity;
 import uk.co.ribot.androidboilerplate.ui.base.BaseFragment;
 
 
 public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMvpView {
 
-    @Inject MoviesEditorPresenter mMoviesSearchPresenter;
+    @Inject MoviesEditorPresenter mMoviesEditorPresenter;
 
     @BindView(R.id.fabMovies) FloatingActionButton mFabMovies;
     @BindView(R.id.movie_subject) EditText mMovieSubject;
@@ -64,14 +66,14 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
         mMovieButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMoviesSearchPresenter.saveMovie(mCurrentMovie);
+                mMoviesEditorPresenter.saveMovie(mCurrentMovie);
             }
         });
 
         mMovieButtonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMoviesSearchPresenter.deleteMovie(mCurrentMovie);
+                mMoviesEditorPresenter.deleteMovie(mCurrentMovie);
             }
         });
 
@@ -86,9 +88,9 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
         {
             mCurrentMovie = bundle.getParcelable(Movie.class.toString());
 
-
             Timber.d("Movie Loaded : " + mCurrentMovie.title());
         }
+
     }
 
     public void setSubject(String subject)
@@ -120,8 +122,33 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     }
 
     @Override
+    public Movie createMovie() {
+
+        mCurrentMovie =  Movie.builder()
+                .setBody(getBody())
+                .setPosters(Posters.create(""))
+                .setTitle(getSubject())
+                .setId(UUID.randomUUID().toString())
+                .setYear(Integer.parseInt(getYear()))
+                .build();
+
+        return mCurrentMovie;
+
+    }
+
+    @Override
     public void showMessage(int messageID) {
         mFragmentListener.showSnackBarMessage(String.format("Movie %s.",getString(messageID)));
+    }
+
+    @Override
+    public void setTitle(int titleID) {
+        getToolbar().setTitle(getString(titleID));
+    }
+
+    @Override
+    public void hideDeleteButton() {
+        mMovieButtonDelete.setVisibility(View.GONE);
     }
 
     @Override
@@ -138,11 +165,12 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view,savedInstanceState);
-        mMoviesSearchPresenter.attachView(this);
+        mMoviesEditorPresenter.attachView(this);
 
-        mMoviesSearchPresenter.populateMovie(mCurrentMovie);
+        mMoviesEditorPresenter.populateMovie(mCurrentMovie);
+
+        mMoviesEditorPresenter.setEditMode(mCurrentMovie!=null);
     }
-
 
     @Override
     protected Toolbar getToolbar() {
@@ -150,8 +178,9 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     }
     @Override
     protected String getTitle() {
-        return getString(R.string.toolbar_title_movie_add);
+        return mToolbar.getTitle().toString();
     }
+
 
 
 }

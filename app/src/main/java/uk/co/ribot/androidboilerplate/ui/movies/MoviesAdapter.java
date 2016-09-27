@@ -88,13 +88,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     private void setThumbnail(Context context, MoviesViewHolder viewHolder, Movie movie) {
         if (viewHolder.movieImageView != null) {
             final String thumbnailUrl = movie.posters().thumbnail();
-            if (thumbnailUrl != null) {
+            if (thumbnailUrl != null && thumbnailUrl.length() > 0) {
                 GlideUrl url = new GlideUrl(thumbnailUrl);
 
                 Glide.with(context)
                         .load(url)
                         .crossFade()
                         .centerCrop()
+                        .placeholder(R.drawable.ic_query_builder_black_24dp)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .listener(new RequestListener<GlideUrl, GlideDrawable>() {
                             @Override

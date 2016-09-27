@@ -10,6 +10,7 @@ import timber.log.Timber;
 import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
+import uk.co.ribot.androidboilerplate.data.model.Posters;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
 
@@ -18,6 +19,8 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
 
     private final DataManager mDataManager;
     private Subscription mSubscription;
+
+    private boolean mIsEditMode;
 
     @Inject
     public MoviesEditorPresenter(DataManager dataManager) {
@@ -49,6 +52,10 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
 
     public void saveMovie(Movie movie)
     {
+        if (movie == null)
+        {
+            movie = getMvpView().createMovie();
+        }
 
         Movie updatedMovie =  Movie.builder()
                 .setBody(getMvpView().getBody())
@@ -112,6 +119,18 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
                     }
                 });
 
+    }
+
+
+    public void setEditMode(boolean editMode)
+    {
+        mIsEditMode = editMode;
+        getMvpView().setTitle((mIsEditMode)?(R.string.toolbar_title_movie_edit):(R.string.toolbar_title_movie_add));
+
+        if (!mIsEditMode)
+        {
+            getMvpView().hideDeleteButton();
+        }
     }
 
 

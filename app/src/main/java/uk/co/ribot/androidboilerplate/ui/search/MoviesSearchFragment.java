@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 
 import java.util.Collections;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -35,12 +36,17 @@ import uk.co.ribot.androidboilerplate.ui.movies.MoviesAdapterListener;
 
 public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMvpView, MoviesAdapterListener {
 
-    @Inject MoviesSearchPresenter mMoviesSearchPresenter;
-    @Inject MoviesAdapter mMoviesAdapter;
+    @Inject
+    MoviesSearchPresenter mMoviesSearchPresenter;
+    @Inject
+    MoviesAdapter mMoviesAdapter;
 
-    @BindView(R.id.progressbar) ProgressBar mProgressBar;
-    @BindView(R.id.recycler_view) protected RecyclerView mRecyclerView;
-    @BindView(R.id.fabMovies) protected FloatingActionButton mFabMovies;
+    @BindView(R.id.progressbar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.recycler_view)
+    protected RecyclerView mRecyclerView;
+    @BindView(R.id.fabMovies)
+    protected FloatingActionButton mFabMovies;
 
     private MenuItem mSearchItem;
 
@@ -61,7 +67,7 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movies_search, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         mRecyclerView.setAdapter(mMoviesAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -79,7 +85,7 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
 
         mMoviesSearchPresenter.attachView(this);
 
@@ -121,11 +127,10 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
 
     @Override
     public void showMessageMovieSaved() {
-        Snackbar.make(mRecyclerView,"Movie Saved",Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mRecyclerView, "Movie Saved", Snackbar.LENGTH_SHORT).show();
     }
 
-    private void initSearchItem()
-    {
+    private void initSearchItem() {
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
         SearchView searchView = (SearchView) mSearchItem.getActionView();
@@ -167,10 +172,12 @@ public class MoviesSearchFragment extends BaseFragment implements MoviesSearchMv
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
     @Override
     protected Toolbar getToolbar() {
         return mToolbar;
     }
+
     @Override
     protected String getTitle() {
         return getString(R.string.toolbar_title_search_movie);

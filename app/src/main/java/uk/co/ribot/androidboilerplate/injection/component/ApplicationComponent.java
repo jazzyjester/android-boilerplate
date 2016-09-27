@@ -10,7 +10,6 @@ import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.local.DatabaseHelper;
 import uk.co.ribot.androidboilerplate.data.local.PreferencesHelper;
 import uk.co.ribot.androidboilerplate.data.remote.MoviesService;
-import uk.co.ribot.androidboilerplate.data.remote.RibotsService;
 import uk.co.ribot.androidboilerplate.injection.ApplicationContext;
 import uk.co.ribot.androidboilerplate.injection.module.ApplicationModule;
 import uk.co.ribot.androidboilerplate.util.RxEventBus;
@@ -21,7 +20,6 @@ public interface ApplicationComponent {
 
     @ApplicationContext Context context();
     Application application();
-    RibotsService ribotsService();
     MoviesService moviesService();
     PreferencesHelper preferencesHelper();
     DatabaseHelper databaseHelper();

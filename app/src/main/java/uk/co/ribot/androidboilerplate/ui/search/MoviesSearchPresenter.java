@@ -1,5 +1,6 @@
 package uk.co.ribot.androidboilerplate.ui.search;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -139,7 +140,6 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
 
 
     }
-
 
 
 }
