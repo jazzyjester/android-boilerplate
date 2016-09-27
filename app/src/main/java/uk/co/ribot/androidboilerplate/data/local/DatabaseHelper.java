@@ -54,6 +54,28 @@ public class DatabaseHelper {
         });
     }
 
+
+    public Observable<Movie> deleteMovie(final Movie movie)
+    {
+        return Observable.create(new Observable.OnSubscribe<Movie>() {
+            @Override
+            public void call(Subscriber<? super Movie> subscriber) {
+
+                BriteDatabase.Transaction transaction = mDb.newTransaction();
+
+                try {
+                    String whereClause =  MovieDb.MovieTable.COLUMN_ID + "=?";
+                    mDb.delete(MovieDb.MovieTable.TABLE_NAME,whereClause,movie.id());
+                    transaction.markSuccessful();
+                    subscriber.onCompleted();
+                }
+                finally {
+                    transaction.end();
+                }
+            }
+        });
+    }
+
     public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
         return Observable.create(new Observable.OnSubscribe<Ribot>() {
             @Override

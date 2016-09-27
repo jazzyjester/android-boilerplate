@@ -56,9 +56,17 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
     @Override
     public void onBindViewHolder(final MoviesViewHolder holder, final int position) {
         Movie movie = mMovies.get(position);
-        //holder.hexColorView.setBackgroundColor(Color.parseColor(ribot.profile().hexColor()));
         holder.titleTextView.setText(String.format("%s", movie.title()));
         holder.yearTextView.setText(String.format("%s", movie.year()));
+
+        if (movie.body() != null) {
+            holder.descriptionTextView.setVisibility(View.VISIBLE);
+            holder.descriptionTextView.setText(String.format("%s", movie.body()));
+        }
+        else
+        {
+            holder.descriptionTextView.setVisibility(View.GONE);
+        }
 
         Context context = holder.titleTextView.getContext();
 
@@ -121,6 +129,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesView
         @BindView(R.id.movie_image) ImageView movieImageView;
         @BindView(R.id.movie_title) TextView titleTextView;
         @BindView(R.id.movie_year) TextView yearTextView;
+        @BindView(R.id.movie_description) TextView descriptionTextView;
+
 
         public MoviesViewHolder(View itemView) {
             super(itemView);

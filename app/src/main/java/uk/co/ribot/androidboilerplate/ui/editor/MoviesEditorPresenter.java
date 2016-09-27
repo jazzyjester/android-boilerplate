@@ -7,6 +7,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
@@ -57,7 +58,7 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
                 .setYear(Integer.parseInt(getMvpView().getYear()))
                 .build();
 
-        mSubscription = mDataManager.saveMovieToDb(updatedMovie)
+        mSubscription = mDataManager.saveMovie(updatedMovie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Movie>() {
@@ -65,7 +66,36 @@ public class MoviesEditorPresenter extends BasePresenter<MoviesEditorMvpView> {
                     public void onCompleted() {
 
                         getMvpView().showMovies();
-                        getMvpView().showUpdateMessage();
+                        getMvpView().showMessage(R.string.snack_bar_message_update);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d("a");
+
+                    }
+
+                    @Override
+                    public void onNext(Movie movie) {
+
+                        Timber.d("a");
+                    }
+                });
+
+    }
+
+    public void deleteMovie(Movie movie)
+    {
+        mSubscription = mDataManager.deleteMovie(movie)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Movie>() {
+                    @Override
+                    public void onCompleted() {
+
+                        getMvpView().showMovies();
+                        getMvpView().showMessage(R.string.snack_bar_message_delete);
 
                     }
 

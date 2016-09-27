@@ -9,12 +9,10 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
-import uk.co.ribot.androidboilerplate.R;
 import uk.co.ribot.androidboilerplate.data.DataManager;
 import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.injection.ConfigPersistent;
 import uk.co.ribot.androidboilerplate.ui.base.BasePresenter;
-import uk.co.ribot.androidboilerplate.ui.movies.MoviesMvpView;
 import uk.co.ribot.androidboilerplate.util.RxUtil;
 
 @ConfigPersistent
@@ -42,7 +40,7 @@ public class MoviesSearchPresenter extends BasePresenter<MoviesSearchMvpView> {
 
     public void saveMovie(Movie movie) {
 
-        mSubscription = mDataManager.saveMovieToDb(movie)
+        mSubscription = mDataManager.saveMovie(movie)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Movie>() {

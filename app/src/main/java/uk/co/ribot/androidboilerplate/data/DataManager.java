@@ -69,48 +69,18 @@ public class DataManager {
 
     public Observable<List<Movie>> getMovies() {
 
-        //List<Movie> list = new ArrayList<>();
-        //list.add(Movie.create("1","Title 1",2014));
-        //list.add(Movie.create("2","Title 2",2015));
-        //list.add(Movie.create("3","Title 3",2016));
-
-        /*
-        return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24","Hacking",30)
-                .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
-                    @Override
-                    public Observable<List<Movie>> call(MovieResults movieResults) {
-
-                        return Observable.just(movieResults.movies());
-                    }
-                });
-
-
-        */
-
         return mDatabaseHelper.getMovies();
-
     }
 
-    public Observable<Movie> saveMovieToDb(Movie movie) {
+    public Observable<Movie> saveMovie(Movie movie) {
 
         return mDatabaseHelper.addMovie(movie);
-
-
     }
 
-    public Observable<MovieResults> syncMovies() {
 
-        /*
-        return mMovieService.getMoviesBySearch("u6ecrp8r634k4yah7ctg6z24","Hacking",30)
-                .flatMap(new Func1<MovieResults, Observable<List<Movie>>>() {
-                    @Override
-                    public Observable<List<Movie>> call(MovieResults movieResults) {
-                        return null;
-                    }
-                });
-        */
-        return null;
+    public Observable<Movie> deleteMovie(Movie movie) {
+
+        return mDatabaseHelper.deleteMovie(movie);
     }
-
 
 }

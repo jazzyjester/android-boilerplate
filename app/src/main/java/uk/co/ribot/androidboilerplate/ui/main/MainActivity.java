@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,MainFragme
         ButterKnife.bind(this);
 
         mMainPresenter.attachView(this);
+
         if (savedInstanceState == null)
         {
             mMainPresenter.showState();

@@ -40,6 +40,17 @@
             android:textSize="@dimen/text_small_body"
             tools:text="developer" />
 
+        <TextView
+            android:id="@+id/movie_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_year"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/movie_image"
+            android:textSize="@dimen/text_small_body"
+            android:textStyle="bold"
+            tools:text="description" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

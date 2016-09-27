@@ -4,6 +4,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import uk.co.ribot.androidboilerplate.data.model.Movie;
 import uk.co.ribot.androidboilerplate.ui.base.MvpView;
 
 public interface MoviesEditorMvpView extends MvpView {
@@ -16,6 +17,8 @@ public interface MoviesEditorMvpView extends MvpView {
     String getYear();
 
     void showMovies();
-    void showUpdateMessage();
+    void showMessage(int messageID);
+
+    void deleteMovie(Movie movie);
 
 }

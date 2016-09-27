@@ -31,7 +31,7 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     @BindView(R.id.movie_body) EditText mMovieBody;
     @BindView(R.id.movie_year) EditText mMovieYear;
     @BindView(R.id.button_ok) Button mMovieButtonOk;
-    @BindView(R.id.button_cancel) Button mMovieButtonCancel;
+    @BindView(R.id.button_delete) Button mMovieButtonDelete;
 
     private Movie mCurrentMovie;
 
@@ -68,6 +68,12 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
             }
         });
 
+        mMovieButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMoviesSearchPresenter.deleteMovie(mCurrentMovie);
+            }
+        });
 
         return view;
     }
@@ -114,8 +120,13 @@ public class MoviesEditorFragment extends BaseFragment implements MoviesEditorMv
     }
 
     @Override
-    public void showUpdateMessage() {
-        mFragmentListener.showSnackBarMessage("Movie Updated.");
+    public void showMessage(int messageID) {
+        mFragmentListener.showSnackBarMessage(String.format("Movie %s.",getString(messageID)));
+    }
+
+    @Override
+    public void deleteMovie(Movie movie) {
+
     }
 
     @Override
